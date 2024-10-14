@@ -72,7 +72,7 @@ const Login = () => {
       } catch (error) {
         Toast.show({
           type: "error",
-          text1: "Network Error",
+          text1: "Error Occured",
           text2: error.message,
           ...toastOptions,
         });
@@ -87,31 +87,48 @@ const Login = () => {
       }}
       className="justify-center h-full"
     >
-      <View className=" p-4">
+      <Text
+        style={{ color: colors.text }}
+        className="text-center text-3xl font-bold mb-3"
+      >
+        Login
+      </Text>
+      <View className="p-4">
         <TextInput
           placeholder="Username"
-          placeholderTextColor={colors.secondary}
+          placeholderTextColor={colors.tabBarBtInActive}
           name="username"
           onChangeText={(value) => handleChange("username", value)}
-          className="w-full p-4 text-lg"
+          className="w-full p-4 text-lg rounded-md mb-2"
           color={colors.text}
-          backgroundColor={colors.background}
+          backgroundColor={colors.secondary}
           borderWidth={0}
         />
         <TextInput
           placeholder="Password"
-          placeholderTextColor={colors.secondary}
+          placeholderTextColor={colors.tabBarBtInActive}
           name="password"
           onChangeText={(value) => handleChange("password", value)}
-          className="w-full p-4 text-lg"
+          className="w-full p-4 text-lg rounded-md mt-2"
           color={colors.text}
-          backgroundColor={colors.background}
+          backgroundColor={colors.secondary}
           borderWidth={0}
         />
-        <TouchableOpacity onPress={handleSubmit}>
-          <Text>Login</Text>
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={{ backgroundColor: colors.primary }}
+          className="rounded-md p-3 my-4"
+        >
+          <Text style={{ color: colors.text }} className="text-center text-lg">
+            Login
+          </Text>
         </TouchableOpacity>
-        <Link href={"/(auth)/Register"}>Register</Link>
+        <Text style={{ color: colors.text }} className="text-center">
+          Are you new here?{" "}
+          <Link href={"/(auth)/Register"} className="text-blue-400">
+            Register
+          </Link>
+        </Text>
       </View>
       <Toast />
     </View>

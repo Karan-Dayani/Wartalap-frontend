@@ -104,83 +104,66 @@ const Register = () => {
 
   return (
     <View
-      className="flex-1 justify-center items-center "
-      style={{
-        backgroundColor: colors.background,
-      }}
+      style={{ backgroundColor: colors.background }}
+      className="justify-center h-full"
     >
-      <Stack.Screen
-        options={{
-          headerShown: true,
-          headerStyle: { backgroundColor: colors.background },
-          headerTitle: "",
-        }}
-      />
-      <View
-        className="px-8 py-12 rounded-3xl shadow-2xl w-11/12"
-        style={{
-          backgroundColor: colors.secondary,
-        }}
+      <Text
+        style={{ color: colors.text }}
+        className="text-center text-3xl font-bold mb-3"
       >
-        <Text
-          className="text-3xl mb-6 text-center"
-          style={{
-            color: colors.text,
-          }}
-        >
-          Register
-        </Text>
-
+        Register
+      </Text>
+      <View className="p-4">
         <TextInput
           placeholder="Username"
+          placeholderTextColor={colors.tabBarBtInActive}
           name="username"
           onChangeText={(value) => handleChange("username", value)}
-          className="w-full p-4 text-lg"
+          className="w-full p-4 text-lg rounded-md mb-2"
           color={colors.text}
-          backgroundColor={colors.background}
+          backgroundColor={colors.secondary}
           borderWidth={0}
-          autoComplete="off"
         />
-
         <TextInput
           placeholder="Email"
+          placeholderTextColor={colors.tabBarBtInActive}
           name="email"
           onChangeText={(value) => handleChange("email", value)}
-          className="w-full p-4 text-lg"
+          className="w-full p-4 text-lg rounded-md my-2"
           color={colors.text}
-          backgroundColor={colors.background}
+          backgroundColor={colors.secondary}
           borderWidth={0}
         />
-
         <TextInput
           placeholder="Password"
+          placeholderTextColor={colors.tabBarBtInActive}
           name="password"
           onChangeText={(value) => handleChange("password", value)}
-          className="w-full p-4 text-lg"
-          type="password"
+          className="w-full p-4 text-lg rounded-md my-2"
           color={colors.text}
-          backgroundColor={colors.background}
+          backgroundColor={colors.secondary}
           borderWidth={0}
         />
-
         <TextInput
           placeholder="Confirm Password"
+          placeholderTextColor={colors.tabBarBtInActive}
           name="confirmPassword"
           onChangeText={(value) => handleChange("confirmPassword", value)}
-          className="w-full p-4 text-lg"
+          className="w-full p-4 text-lg rounded-md mt-2"
           color={colors.text}
-          backgroundColor={colors.background}
+          backgroundColor={colors.secondary}
           borderWidth={0}
         />
-
         <TouchableOpacity
           onPress={handleSubmit}
-          className="w-full bg-red-500 py-4 rounded-2xl"
+          style={{ backgroundColor: colors.primary }}
+          className="rounded-md p-3 my-4"
         >
-          <Text className="text-white text-center text-xl">Sign Up</Text>
+          <Text style={{ color: colors.text }} className="text-center text-lg">
+            Register
+          </Text>
         </TouchableOpacity>
       </View>
-
       <Toast />
     </View>
   );
