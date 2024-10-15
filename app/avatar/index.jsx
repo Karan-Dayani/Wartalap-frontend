@@ -6,10 +6,11 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setAvatarRoute } from "../api/apiRoutes";
 import { useTheme } from "@react-navigation/native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const avatar = () => {
   const { colors } = useTheme();
-  const api = "https://api.dicebear.com/6.x/lorelei/png";
+  const api = "https://api.dicebear.com/6.x/pixel-art/png";
 
   const toastOptions = {
     position: "bottom",
@@ -23,7 +24,7 @@ const avatar = () => {
   const fetchAvatars = async () => {
     const avatarData = [];
     try {
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 4; i++) {
         const avatarUrl = `${api}?seed=${Math.round(Math.random() * 10000)}`;
         avatarData.push(avatarUrl);
       }
@@ -58,7 +59,6 @@ const avatar = () => {
         const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
           image: image64,
         });
-        console.log(data);
 
         if (data.isSet) {
           user.isAvatarImageSet = true;
@@ -86,35 +86,43 @@ const avatar = () => {
 
   return (
     <View
-      className="flex-1 items-center justify-center min-h-screen"
       style={{
         backgroundColor: colors.background,
       }}
+      className="justify-center h-full"
     >
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Text className="text-3xl font-bold" style={{ color: colors.text }}>
-        Pick Your Avatar
-      </Text>
+      <Stack.Screen options={{ headerShown: false }} />
 
-      <View className="my-4 flex-wrap flex-row justify-center">
-        {avatars.map((avatar, index) => (
+      <View className="flex-row justify-center items-center gap-5">
+        <Text
+          style={{ color: colors.text }}
+          className="text-3xl text-center font-bold"
+        >
+          Pick your Avatar
+        </Text>
+        <TouchableOpacity
+          className="bg-blue-400 p-2 rounded-full"
+          onPress={fetchAvatars}
+        >
+          <Ionicons name="reload-outline" size={20} color={colors.text} />
+        </TouchableOpacity>
+      </View>
+
+      <View className="flex-wrap flex-row my-4 justify-center">
+        {avatars.map((avatar, i) => (
           <TouchableOpacity
-            key={index}
-            onPress={() => setSelectedAvatar(index)}
+            key={i}
+            onPress={() => setSelectedAvatar(i)}
             style={{
-              margin: 10,
+              margin: 20,
               borderWidth: 2,
-              borderColor: selectedAvatar === index ? colors.primary : "white",
-              borderRadius: 48,
+              borderRadius: 15,
+              borderColor: selectedAvatar === i ? colors.primary : "white",
             }}
           >
             <Image
               source={{ uri: avatar }}
-              style={{ width: 100, height: 96, borderRadius: 48 }}
+              style={{ width: 100, height: 100 }}
               onError={(error) =>
                 console.log("Image loading error", error.nativeEvent.error)
               }
@@ -123,19 +131,17 @@ const avatar = () => {
         ))}
       </View>
 
-      <TouchableOpacity
-        className="bg-blue-500 mb-4 text-white p-4 rounded-2xl "
-        onPress={fetchAvatars}
-      >
-        <Text className="text-white text-lg">Load more</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        className="bg-green-500 text-white p-4 rounded-2xl hover:bg-blue-600"
-        onPress={setProfilePicture}
-      >
-        <Text className="text-white text-lg">Confirm Selection</Text>
-      </TouchableOpacity>
+      <View className="flex-row justify-center gap-5">
+        <TouchableOpacity
+          className="p-4 rounded-lg"
+          style={{ backgroundColor: colors.primary }}
+          onPress={setProfilePicture}
+        >
+          <Text className="text-lg" style={{ color: colors.text }}>
+            Confirm Selection
+          </Text>
+        </TouchableOpacity>
+      </View>
       <Toast />
     </View>
   );
