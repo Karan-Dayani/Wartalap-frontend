@@ -107,6 +107,7 @@ const Register = () => {
       style={{ backgroundColor: colors.background }}
       className="justify-center h-full"
     >
+      <Stack.Screen options={{ headerShown: false }} />
       <Text
         style={{ color: colors.text }}
         className="text-center text-3xl font-bold mb-3"
@@ -135,6 +136,7 @@ const Register = () => {
           borderWidth={0}
         />
         <TextInput
+          secureTextEntry={true}
           placeholder="Password"
           placeholderTextColor={colors.tabBarBtInActive}
           name="password"
@@ -145,6 +147,7 @@ const Register = () => {
           borderWidth={0}
         />
         <TextInput
+          secureTextEntry={true}
           placeholder="Confirm Password"
           placeholderTextColor={colors.tabBarBtInActive}
           name="confirmPassword"

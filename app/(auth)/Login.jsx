@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useTheme } from "@react-navigation/native";
-import { Link, router } from "expo-router";
+import { Link, router, Stack } from "expo-router";
 import { loginRoute } from "../api/apiRoutes";
 import Toast from "react-native-toast-message";
 import axios from "axios";
@@ -87,6 +87,7 @@ const Login = () => {
       }}
       className="justify-center h-full"
     >
+      <Stack.Screen options={{ headerShown: false }} />
       <Text
         style={{ color: colors.text }}
         className="text-center text-3xl font-bold mb-3"
@@ -105,6 +106,8 @@ const Login = () => {
           borderWidth={0}
         />
         <TextInput
+          type="password"
+          secureTextEntry={true}
           placeholder="Password"
           placeholderTextColor={colors.tabBarBtInActive}
           name="password"
