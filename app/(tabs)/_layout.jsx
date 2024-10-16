@@ -4,15 +4,20 @@ import React from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { useTheme } from "@react-navigation/native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { colors } = useTheme();
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: false,
+        headerTitle: "वार्ता laap",
+        headerTitleStyle: { fontSize: 30, fontWeight: "bold" },
+        headerStyle: { backgroundColor: colors.secondary },
+        headerShadowVisible: false,
       }}
     >
       <Tabs.Screen

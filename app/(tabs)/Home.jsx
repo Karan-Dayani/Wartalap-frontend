@@ -5,6 +5,7 @@ import { useTheme } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { allUsersRoute } from "../api/apiRoutes";
+import Contacts from "../../components/Contacts";
 
 const Home = () => {
   const { colors } = useTheme();
@@ -42,7 +43,6 @@ const Home = () => {
             const { data } = await axios.get(
               `${allUsersRoute}/${currentUser._id}`
             );
-            console.log(data);
             setContacts(data);
           } catch (error) {
             console.error("Failed to fetch contacts", error);
@@ -61,11 +61,18 @@ const Home = () => {
       style={{
         backgroundColor: colors.background,
       }}
+      className="h-full"
     >
-      <Text>Home</Text>
-      <TouchableOpacity onPress={handleLogout}>
-        <Text style={{ color: colors.text }}>Log Out</Text>
-      </TouchableOpacity>
+      <Contacts contacts={contacts} currentUser={currentUser} />
+      {/* <TouchableOpacity
+        onPress={handleLogout}
+        style={{ backgroundColor: colors.primary }}
+        className="items-center rounded-lg p-3"
+      >
+        <Text style={{ color: colors.text }} className="text-xl">
+          Log Out
+        </Text>
+      </TouchableOpacity> */}
     </View>
   );
 };
