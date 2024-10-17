@@ -6,7 +6,7 @@ import { FlatList, Image, Text, View } from "react-native";
 const Contacts = ({ contacts, currentUser }) => {
   const { colors } = useTheme();
   return (
-    <View>
+    <View className="mt-5">
       <FlatList
         data={contacts}
         keyExtractor={(contact) => contact._id}
@@ -23,26 +23,26 @@ const Contacts = ({ contacts, currentUser }) => {
               }}
               // onPress={() => handleChatChange(item)}
               key={item._id}
-              className="mb-5 rounded-3xl"
+              className="mb-3 rounded-3xl mx-2"
               style={{ backgroundColor: colors.secondary }}
             >
-              <View className="flex-row items-center p-4 mb-4">
+              <View className="flex-row items-center p-4">
                 <View
                   className="border-2 p-1 rounded-full mr-4"
-                  style={{ borderColor: colors.text }}
+                  style={{ borderColor: colors.primary }}
                 >
                   <Image
                     source={{
                       uri: `data:image/png;base64,${item.avatarImage}`,
                     }}
-                    className="w-12 h-12 rounded-full"
+                    className="w-14 h-14 rounded-full"
                     resizeMode="cover"
                   />
                 </View>
 
                 {/* Username */}
                 <Text
-                  className="text-lg font-medium"
+                  className="text-2xl font-medium"
                   style={{ color: colors.text }}
                 >
                   {item.username}
