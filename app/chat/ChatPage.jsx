@@ -7,6 +7,7 @@ import { getAllMessageRoute, sendMessageRoute } from "../api/apiRoutes";
 import uuid from "react-native-uuid";
 import Messages from "../../components/Messages";
 import ChatInput from "../../components/ChatInput";
+import socket from "../../socket";
 
 const ChatPage = () => {
   const { colors } = useTheme();
@@ -15,6 +16,41 @@ const ChatPage = () => {
   const [image, setImage] = useState("");
   const [selectedGif, setSelectedGif] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
+
+  useEffect(() => {
+    socket.on("msg-recieve", (data) => {
+      console.log(data);
+      if (data) {
+        setArrivalMessage({
+          fromSelf: false,
+          message: data.messages || "",
+          image: data.image || "",
+          gif: data.gif || "",
+          messageId: data.messageId || uuid.v4(),
+        });
+      }
+    });
+
+    socket.on("msg-deleted", (data) => {
+      if (data.messageId || data.id) {
+        setMessages((prev) => {
+          const updatedMessage = prev?.filter((message) => {
+            return (
+              (message.id && message.id !== data.messageId) ||
+              (message.messageId && message.messageId !== data.messageId)
+            );
+          });
+          return updatedMessage;
+        });
+      }
+    });
+  }, [params.currentUser]);
+
+  useEffect(() => {
+    if (arrivalMessage) {
+      setMessages((prev) => [...prev, arrivalMessage]);
+    }
+  }, [arrivalMessage]);
 
   const handleSendMessage = async (message, image, gif) => {
     const messageText = message || "";
@@ -34,6 +70,15 @@ const ChatPage = () => {
 
     try {
       await axios.post(sendMessageRoute, {
+        from: params.currentUser,
+        to: params.contactId,
+        messages: messageText,
+        image: imageURL,
+        gif: gifURL,
+        messageId,
+      });
+
+      socket.emit("send-msg", {
         from: params.currentUser,
         to: params.contactId,
         messages: messageText,

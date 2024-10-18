@@ -5,6 +5,8 @@ import axios from "axios";
 import { deleteMessageRoute } from "../app/api/apiRoutes";
 import { TouchableOpacity } from "react-native";
 import ImageViewer from "react-native-image-zoom-viewer";
+import { storage } from "../firebaseClient";
+import socket from "../socket";
 
 const Messages = ({ messages, setMessages, currentUser, contactId }) => {
   const { colors } = useTheme();
@@ -13,13 +15,17 @@ const Messages = ({ messages, setMessages, currentUser, contactId }) => {
   const [visible, setVisible] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [gifStates, setGifStates] = useState({});
-  const scrollViewRef = useRef(null);
+  // const scrollViewRef = useRef(null);
 
-  useEffect(() => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollToEnd({ animated: true });
-    }
-  }, [messages]);
+  // useEffect(() => {
+  //   if (scrollViewRef.current) {
+  //     scrollViewRef.current.scrollToEnd({ animated: true });
+  //   }
+  // }, [messages]);
+
+  // useEffect(() => {
+  //   scrollViewRef.current.scrollToEnd({ animated: true });
+  // }, []);
 
   const fallbackImage = require("../assets/images/icon.png");
 
@@ -43,7 +49,7 @@ const Messages = ({ messages, setMessages, currentUser, contactId }) => {
   };
 
   const images = messages
-    .filter((message) => message.image)
+    ?.filter((message) => message.image)
     .map((message, index) => ({
       url: message.image,
       index: index,
@@ -64,22 +70,19 @@ const Messages = ({ messages, setMessages, currentUser, contactId }) => {
           messageId: messageIdToDelete,
         });
 
-        setMessages((prevMessages) => {
-          const updatedMessages = prevMessages.filter((message) => {
-            return (
-              (message.id && message.id !== messageIdToDelete) ||
-              (message.messageId && message.messageId !== messageIdToDelete)
-            );
-          });
+        setMessages((prev) =>
+          prev.filter(
+            (message) => (message.messageId || message.id) !== messageIdToDelete
+          )
+        );
 
-          return updatedMessages;
+        setSelectedMessage(null);
+
+        socket.emit("delete-msg", {
+          to: contactId,
+          from: currentUser,
+          messageId: messageIdToDelete,
         });
-
-        // socket.current.emit("delete-msg", {
-        //   to: contactId,
-        //   from: currentUser,
-        //   messageId: messageIdToDelete,
-        // });
       } catch (error) {
         console.error("Error deleting message:", error);
       } finally {
@@ -91,7 +94,11 @@ const Messages = ({ messages, setMessages, currentUser, contactId }) => {
   return (
     <View style={{ backgroundColor: colors.background }} className="p-3">
       <FlatList
-        ref={scrollViewRef}
+        ref={(ref) => (this.flatList = ref)}
+        onContentSizeChange={() =>
+          this.flatList.scrollToEnd({ animated: true })
+        }
+        onLayout={() => this.flatList.scrollToEnd({ animated: true })}
         data={messages}
         className="mb-16"
         keyExtractor={(item) => item.id || item.messageId}

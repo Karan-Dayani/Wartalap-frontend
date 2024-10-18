@@ -6,6 +6,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { allUsersRoute } from "../api/apiRoutes";
 import Contacts from "../../components/Contacts";
+import socket from "../../socket";
 
 const Home = () => {
   const { colors } = useTheme();
@@ -15,6 +16,19 @@ const Home = () => {
   const handleLogout = async () => {
     await AsyncStorage.clear();
     router.replace("/(auth)/Login");
+  };
+
+  useEffect(() => {
+    if (currentUser) {
+      socket.emit("add-user", currentUser._id);
+    }
+  }, [currentUser]);
+
+  const handleChatChange = (chat) => {
+    socket.emit("set-active-chat", {
+      userId: currentUser._id,
+      activeChat: chat._id,
+    });
   };
 
   useEffect(() => {
@@ -63,7 +77,11 @@ const Home = () => {
       }}
       className="h-full"
     >
-      <Contacts contacts={contacts} currentUser={currentUser} />
+      <Contacts
+        contacts={contacts}
+        currentUser={currentUser}
+        handleChatChange={handleChatChange}
+      />
       {/* <TouchableOpacity
         onPress={handleLogout}
         style={{ backgroundColor: colors.primary }}

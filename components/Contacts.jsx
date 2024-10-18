@@ -3,7 +3,7 @@ import { Link } from "expo-router";
 import React from "react";
 import { FlatList, Image, Text, View } from "react-native";
 
-const Contacts = ({ contacts, currentUser }) => {
+const Contacts = ({ contacts, currentUser, handleChatChange }) => {
   const { colors } = useTheme();
   return (
     <View className="mt-5">
@@ -21,7 +21,7 @@ const Contacts = ({ contacts, currentUser }) => {
                   contactId: item._id,
                 },
               }}
-              // onPress={() => handleChatChange(item)}
+              onPress={() => handleChatChange(item)}
               key={item._id}
               className="mb-3 rounded-3xl mx-2"
               style={{ backgroundColor: colors.secondary }}

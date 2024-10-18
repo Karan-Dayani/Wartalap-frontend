@@ -244,7 +244,7 @@ const ChatInput = ({
             value={msg}
             onChangeText={(value) => setMsg(value)}
             placeholder="Type a message..."
-            placeholderTextColor={colors.text}
+            placeholderTextColor="#696969"
             multiline={true}
             maxLength={500}
             className="flex-1 rounded-3xl text-lg"
